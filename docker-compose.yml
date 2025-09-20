@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: reparagymstore_postgres
+    environment:
+      POSTGRES_DB: reparagymstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - reparagymstore_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: reparagymstore_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - reparagymstore_network
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.4
+    container_name: reparagymstore_meilisearch
+    environment:
+      MEILI_MASTER_KEY: "reparagym_master_key_development"
+      MEILI_ENV: "development"
+    ports:
+      - "7700:7700"
+    volumes:
+      - meilisearch_data:/meili_data
+    networks:
+      - reparagymstore_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  meilisearch_data:
+    driver: local
+
+networks:
+  reparagymstore_network:
+    driver: bridge
