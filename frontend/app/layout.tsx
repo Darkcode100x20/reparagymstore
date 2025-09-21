@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
+import { WhatsAppFAB } from '@/components/common/whatsapp-fab'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -91,7 +94,10 @@ export default function RootLayout({
     <html lang="es" className={`${inter.variable} ${poppins.variable}`}>
       <body className={`${inter.className} antialiased`}>
         <Providers>
+          <Header />
           {children}
+          <Footer />
+          <WhatsAppFAB />
         </Providers>
       </body>
     </html>
